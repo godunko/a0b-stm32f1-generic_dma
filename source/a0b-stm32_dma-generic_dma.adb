@@ -201,11 +201,14 @@ package body A0B.STM32_DMA.Generic_DMA is
       Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
-      Memory_Data_Size     : A0B.STM32_DMA.Data_Size) is
+      Memory_Data_Size     : A0B.STM32_DMA.Data_Size)
+   is
+      Registers : A0B.Peripherals.DMA.Channel_Registers
+        renames Self.Peripheral.Channel (Self.Channel);
+
    begin
       declare
-         Value : A0B.Peripherals.DMA.DMA_CCR_Register :=
-           Self.Peripheral.Channel (Self.Channel).DMA_CCR;
+         Value : A0B.Peripherals.DMA.DMA_CCR_Register := Registers.DMA_CCR;
 
       begin
          Value.DIR     := A0B.Peripherals.DMA.Read_From_Memory;
@@ -217,10 +220,10 @@ package body A0B.STM32_DMA.Generic_DMA is
          Value.PL      := Priority;
          Value.MEM2MEM := False;  --  0: Memory to memory mode disabled
 
-         Self.Peripheral.Channel (Self.Channel).DMA_CCR := Value;
+         Registers.DMA_CCR := Value;
       end;
 
-      Self.Peripheral.Channel (Self.Channel).DMA_CPAR.PA := Peripheral_Address;
+      Registers.DMA_CPAR := (PA => Peripheral_Address);
    end Configure_Memory_To_Peripheral;
 
    ------------------------------------
@@ -232,11 +235,14 @@ package body A0B.STM32_DMA.Generic_DMA is
       Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
-      Memory_Data_Size     : A0B.STM32_DMA.Data_Size) is
+      Memory_Data_Size     : A0B.STM32_DMA.Data_Size)
+   is
+      Registers : A0B.Peripherals.DMA.Channel_Registers
+        renames Self.Peripheral.Channel (Self.Channel);
+
    begin
       declare
-         Value : A0B.Peripherals.DMA.DMA_CCR_Register :=
-           Self.Peripheral.Channel (Self.Channel).DMA_CCR;
+         Value : A0B.Peripherals.DMA.DMA_CCR_Register := Registers.DMA_CCR;
 
       begin
          Value.DIR     := A0B.Peripherals.DMA.Read_From_Peripheral;
@@ -248,10 +254,10 @@ package body A0B.STM32_DMA.Generic_DMA is
          Value.PL      := Priority;
          Value.MEM2MEM := False;  --  0: Memory to memory mode disabled
 
-         Self.Peripheral.Channel (Self.Channel).DMA_CCR := Value;
+         Registers.DMA_CCR := Value;
       end;
 
-      Self.Peripheral.Channel (Self.Channel).DMA_CPAR.PA := Peripheral_Address;
+      Registers.DMA_CPAR := (PA => Peripheral_Address);
    end Configure_Peripheral_To_Memory;
 
    -------------
@@ -339,10 +345,14 @@ package body A0B.STM32_DMA.Generic_DMA is
    procedure Set_Memory
      (Self            : in out Abstract_DMA_Channel'Class;
       Memory_Address  : System.Address;
-      Number_Of_Items : A0B.Types.Unsigned_16) is
+      Number_Of_Items : A0B.Types.Unsigned_16)
+   is
+      Registers : A0B.Peripherals.DMA.Channel_Registers
+        renames Self.Peripheral.Channel (Self.Channel);
+
    begin
-      Self.Peripheral.Channel (Self.Channel).DMA_CMAR.MA   := Memory_Address;
-      Self.Peripheral.Channel (Self.Channel).DMA_CNDTR.NDT := Number_Of_Items;
+      Registers.DMA_CMAR      := (MA => Memory_Address);
+      Registers.DMA_CNDTR.NDT := Number_Of_Items;
    end Set_Memory;
 
    -------------------------------------
