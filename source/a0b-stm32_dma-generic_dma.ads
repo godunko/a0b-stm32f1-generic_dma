@@ -10,7 +10,6 @@ with A0B.Callbacks;
 with A0B.Peripherals.DMA;
 with A0B.Types;
 
-generic
 package A0B.STM32_DMA.Generic_DMA
   with Pure
 is
