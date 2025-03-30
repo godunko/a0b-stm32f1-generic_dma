@@ -13,18 +13,8 @@
 --  with A0B.Types;
 
 generic
-   type DMA_Channel (<>) is
-     new A0B.STM32_DMA.Generic_DMA.DMA_Channel with private;
-   --  type DMA_Channel is new A0B.stm
-   --  type Interrupt_Number is range <>;
-   --
-   --  with procedure Clear_Pending (Interrupt : Interrupt_Number);
-   --
-   --  with procedure Enable_Interrupt (Interrupt : Interrupt_Number);
-   --
-   --  with procedure Disable_Interrupt (Interrupt : Interrupt_Number);
+   type DMA_Channel (<>) is new Abstract_DMA_Channel with private;
 
-   --  Channel : in out A0B.STM32_DMA.Generic_DMA.DMA_Channel'Class;
    Channel : in out DMA_Channel;
 
 procedure A0B.STM32_DMA.Generic_DMA.Generic_DMA1_CH1_Handler

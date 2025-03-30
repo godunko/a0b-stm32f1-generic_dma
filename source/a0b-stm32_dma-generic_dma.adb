@@ -197,7 +197,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    ------------------------------------
 
    procedure Configure_Memory_To_Peripheral
-     (Self                 : in out DMA_Channel'Class;
+     (Self                 : in out Abstract_DMA_Channel'Class;
       Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
@@ -228,7 +228,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    ------------------------------------
 
    procedure Configure_Peripheral_To_Memory
-     (Self                 : in out DMA_Channel'Class;
+     (Self                 : in out Abstract_DMA_Channel'Class;
       Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
@@ -258,7 +258,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    -- Disable --
    -------------
 
-   procedure Disable (Self : in out DMA_Channel'Class) is
+   procedure Disable (Self : in out Abstract_DMA_Channel'Class) is
    begin
       Self.Peripheral.Channel (Self.Channel).DMA_CCR.EN := False;
    end Disable;
@@ -267,7 +267,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    -- Enable --
    ------------
 
-   procedure Enable (Self : in out DMA_Channel'Class) is
+   procedure Enable (Self : in out Abstract_DMA_Channel'Class) is
    begin
       Self.Peripheral.Channel (Self.Channel).DMA_CCR.EN := True;
    end Enable;
@@ -277,7 +277,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    -----------------------------------------
 
    procedure Enable_Transfer_Completed_Interrupt
-     (Self : in out DMA_Channel'Class) is
+     (Self : in out Abstract_DMA_Channel'Class) is
    begin
       Self.Peripheral.Channel (Self.Channel).DMA_CCR.TCIE := True;
    end Enable_Transfer_Completed_Interrupt;
@@ -287,7 +287,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    -------------------------
 
    function Get_Number_Of_Items
-     (Self : DMA_Channel'Class) return A0B.Types.Unsigned_16 is
+     (Self : Abstract_DMA_Channel'Class) return A0B.Types.Unsigned_16 is
    begin
       return Self.Peripheral.Channel (Self.Channel).DMA_CNDTR.NDT;
    end Get_Number_Of_Items;
@@ -296,7 +296,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    -- Initialize --
    ----------------
 
-   not overriding procedure Initialize (Self : in out DMA_Channel) is
+   not overriding procedure Initialize (Self : in out Abstract_DMA_Channel) is
    begin
       --  XXX Enable clocks - it is platform depended
 
@@ -312,16 +312,13 @@ package body A0B.STM32_DMA.Generic_DMA is
 
          Self.Peripheral.Channel (Self.Channel).DMA_CCR := Value;
       end;
---
---        Clear_Pending (Self.Interrupt);
---        Enable_Interrupt (Self.Interrupt);
    end Initialize;
 
    ----------------
    -- Is_Enabled --
    ----------------
 
-   function Is_Enabled (Self : DMA_Channel'Class) return Boolean is
+   function Is_Enabled (Self : Abstract_DMA_Channel'Class) return Boolean is
    begin
       return Self.Peripheral.Channel (Self.Channel).DMA_CCR.EN;
    end Is_Enabled;
@@ -330,7 +327,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    -- On_Interrupt --
    ------------------
 
-   procedure On_Interrupt (Self : in out DMA_Channel'Class) is
+   procedure On_Interrupt (Self : in out Abstract_DMA_Channel'Class) is
    begin
       A0B.Callbacks.Emit (Self.Callback);
    end On_Interrupt;
@@ -340,7 +337,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    ----------------
 
    procedure Set_Memory
-     (Self            : in out DMA_Channel'Class;
+     (Self            : in out Abstract_DMA_Channel'Class;
       Memory_Address  : System.Address;
       Number_Of_Items : A0B.Types.Unsigned_16) is
    begin
@@ -353,7 +350,7 @@ package body A0B.STM32_DMA.Generic_DMA is
    -------------------------------------
 
    procedure Set_Transfer_Completed_Callback
-     (Self     : in out DMA_Channel'Class;
+     (Self     : in out Abstract_DMA_Channel'Class;
       Callback : A0B.Callbacks.Callback) is
    begin
       Self.Callback := Callback;

@@ -5,8 +5,7 @@
 --
 
 generic
-   type DMA_Channel (<>) is
-     new A0B.STM32_DMA.Generic_DMA.DMA_Channel with private;
+   type DMA_Channel (<>) is new Abstract_DMA_Channel with private;
 
    Channel : in out DMA_Channel;
 
