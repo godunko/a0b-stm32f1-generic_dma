@@ -170,14 +170,14 @@ is
       DMA_CMAR  at DMA_CMARx_Offset - DMA_CCRx_Offset range 0 .. 31;
    end record;
 
-   type Channle_Array is
+   type Channel_Array is
      array (A0B.STM32_DMA.DMA_Channel_Number) of Channel_Registers
        with Pack, Size => 8 * 160;
 
    type DMA_Registers is record
       DMA_ISR  : DMA_ISR_Register with Volatile, Full_Access_Only;
       DMA_IFCR : DMA_IFCR_Register with Volatile, Full_Access_Only;
-      Channel  : Channle_Array;
+      Channel  : Channel_Array;
    end record;
 
    for DMA_Registers use record
