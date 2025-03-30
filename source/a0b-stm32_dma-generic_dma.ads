@@ -13,12 +13,12 @@ with A0B.Peripherals.DMA;
 with A0B.Types;
 
 generic
-   type Interrupt_Number is range <>;
-
-   with procedure Clear_Pending (Interrupt : Interrupt_Number);
-
-   with procedure Enable_Interrupt (Interrupt : Interrupt_Number);
-
+   --  type Interrupt_Number is range <>;
+   --
+   --  with procedure Clear_Pending (Interrupt : Interrupt_Number);
+   --
+   --  with procedure Enable_Interrupt (Interrupt : Interrupt_Number);
+   --
    --  with procedure Disable_Interrupt (Interrupt : Interrupt_Number);
 
 package A0B.STM32_DMA.Generic_DMA
@@ -32,9 +32,8 @@ is
 
    type DMA_Channel
      (Peripheral : not null access A0B.Peripherals.DMA.DMA_Registers;
-      Channel    : A0B.STM32_DMA.DMA_Channel_Number;
-      Interrupt  : Interrupt_Number)
-   is tagged limited private
+      Channel    : A0B.STM32_DMA.DMA_Channel_Number)
+   is abstract tagged limited private
      with Preelaborable_Initialization;
 
    not overriding procedure Initialize (Self : in out DMA_Channel);
@@ -99,9 +98,8 @@ private
 
    type DMA_Channel
      (Peripheral : not null access A0B.Peripherals.DMA.DMA_Registers;
-      Channel    : A0B.STM32_DMA.DMA_Channel_Number;
-      Interrupt  : Interrupt_Number)
-   is tagged limited record
+      Channel    : A0B.STM32_DMA.DMA_Channel_Number)
+   is abstract tagged limited record
       Callback : A0B.Callbacks.Callback;
    end record;
 

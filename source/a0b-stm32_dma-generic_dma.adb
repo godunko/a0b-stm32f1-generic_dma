@@ -312,9 +312,9 @@ package body A0B.STM32_DMA.Generic_DMA is
 
          Self.Peripheral.Channel (Self.Channel).DMA_CCR := Value;
       end;
-
-      Clear_Pending (Self.Interrupt);
-      Enable_Interrupt (Self.Interrupt);
+--
+--        Clear_Pending (Self.Interrupt);
+--        Enable_Interrupt (Self.Interrupt);
    end Initialize;
 
    ----------------
