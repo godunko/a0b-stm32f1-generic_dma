@@ -10,7 +10,7 @@ with A0B.Callbacks;
 with A0B.Peripherals.DMA;
 with A0B.Types;
 
-package A0B.STM32_DMA.Generic_DMA
+package A0B.STM32_DMA.F1_Channels
   with Pure
 is
 
@@ -85,4 +85,4 @@ private
 
    procedure On_Interrupt (Self : in out Abstract_DMA_Channel'Class);
 
-end A0B.STM32_DMA.Generic_DMA;
+end A0B.STM32_DMA.F1_Channels;

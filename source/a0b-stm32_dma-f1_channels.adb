@@ -4,7 +4,7 @@
 --  SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 --
 
-package body A0B.STM32_DMA.Generic_DMA is
+package body A0B.STM32_DMA.F1_Channels is
 
 --  with A0B.ARMv7M.NVIC_Utilities;
 --  with A0B.STM32G4.Peripherals.RCC;
@@ -366,4 +366,4 @@ package body A0B.STM32_DMA.Generic_DMA is
       Self.Callback := Callback;
    end Set_Transfer_Completed_Callback;
 
-end A0B.STM32_DMA.Generic_DMA;
+end A0B.STM32_DMA.F1_Channels;
