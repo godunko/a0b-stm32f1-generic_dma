@@ -94,28 +94,6 @@ package body A0B.STM32_DMA.F1_Channels is
 --        Self.Peripheral.Channel (Self.Channel).DMA_CCR.TCIE := False;
 --     end Disable_Transfer_Completed;
 --
---     ---------------------------------------------
---     -- Get_Masked_And_Clear_Transfer_Completed --
---     ---------------------------------------------
---
---     function Get_Masked_And_Clear_Transfer_Completed
---       (Self : in out DMA_Channel'Class) return Boolean is
---     begin
---        return Result : constant Boolean :=
---          Self.Peripheral.DMA_ISR.ISR (Self.Channel).TCIF
---            and Self.Peripheral.Channel (Self.Channel).DMA_CCR.TCIE
---        do
---           declare
---              Value : A0B.Peripherals.DMA.DMA_IFCR_Register :=
---                (IFCR => (others => (others => False)));
---
---           begin
---              Value.IFCR (Self.Channel).CTCIF := True;
---              Self.Peripheral.DMA_IFCR := Value;
---           end;
---        end return;
---     end Get_Masked_And_Clear_Transfer_Completed;
---
 --     ----------------
 --     -- Initialize --
 --     ----------------
@@ -198,7 +176,6 @@ package body A0B.STM32_DMA.F1_Channels is
 
    procedure Configure_Memory_To_Peripheral
      (Self                 : in out Abstract_DMA_Channel'Class;
-      Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
       Memory_Data_Size     : A0B.STM32_DMA.Data_Size)
@@ -217,7 +194,6 @@ package body A0B.STM32_DMA.F1_Channels is
          Value.MINC    := True;   --  1: Memory increment mode enabled
          Value.PSIZE   := Peripheral_Data_Size;
          Value.MSIZE   := Memory_Data_Size;
-         Value.PL      := Priority;
          Value.MEM2MEM := False;  --  0: Memory to memory mode disabled
 
          Registers.DMA_CCR := Value;
@@ -232,7 +208,6 @@ package body A0B.STM32_DMA.F1_Channels is
 
    procedure Configure_Peripheral_To_Memory
      (Self                 : in out Abstract_DMA_Channel'Class;
-      Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
       Memory_Data_Size     : A0B.STM32_DMA.Data_Size)
@@ -251,7 +226,6 @@ package body A0B.STM32_DMA.F1_Channels is
          Value.MINC    := True;   --  1: Memory increment mode enabled
          Value.PSIZE   := Peripheral_Data_Size;
          Value.MSIZE   := Memory_Data_Size;
-         Value.PL      := Priority;
          Value.MEM2MEM := False;  --  0: Memory to memory mode disabled
 
          Registers.DMA_CCR := Value;
@@ -288,6 +262,28 @@ package body A0B.STM32_DMA.F1_Channels is
       Self.Peripheral.Channel (Self.Channel).DMA_CCR.TCIE := True;
    end Enable_Transfer_Completed_Interrupt;
 
+   ---------------------------------------------
+   -- Get_Masked_And_Clear_Transfer_Completed --
+   ---------------------------------------------
+
+   function Get_Masked_And_Clear_Transfer_Completed
+     (Self : in out Abstract_DMA_Channel'Class) return Boolean is
+   begin
+      return Result : constant Boolean :=
+        Self.Peripheral.DMA_ISR.ISR (Self.Channel).TCIF
+          and Self.Peripheral.Channel (Self.Channel).DMA_CCR.TCIE
+      do
+         declare
+            Value : A0B.Peripherals.DMA.DMA_IFCR_Register :=
+              (IFCR => (others => (others => False)));
+
+         begin
+            Value.IFCR (Self.Channel).CTCIF := True;
+            Self.Peripheral.DMA_IFCR := Value;
+         end;
+      end return;
+   end Get_Masked_And_Clear_Transfer_Completed;
+
    -------------------------
    -- Get_Number_Of_Items --
    -------------------------
@@ -315,6 +311,7 @@ package body A0B.STM32_DMA.F1_Channels is
          Value.TCIE := False;  --  0: TC interrupt disabled
          Value.HTIE := False;  --  0: HT interrupt disabled
          Value.TEIE := False;  --  0: TE interrupt disabled
+         Value.PL   := Self.Priority;
 
          Self.Peripheral.Channel (Self.Channel).DMA_CCR := Value;
       end;

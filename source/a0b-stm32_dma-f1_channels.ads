@@ -16,7 +16,8 @@ is
 
    type Abstract_DMA_Channel
      (Peripheral : not null access A0B.Peripherals.DMA.DMA_Registers;
-      Channel    : A0B.STM32_DMA.DMA_Channel_Number)
+      Channel    : A0B.STM32_DMA.DMA_Channel_Number;
+      Priority   : A0B.STM32_DMA.Priority_Level)
    is abstract tagged limited private
      with Preelaborable_Initialization;
 
@@ -24,14 +25,12 @@ is
 
    procedure Configure_Peripheral_To_Memory
      (Self                 : in out Abstract_DMA_Channel'Class;
-      Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
       Memory_Data_Size     : A0B.STM32_DMA.Data_Size);
 
    procedure Configure_Memory_To_Peripheral
      (Self                 : in out Abstract_DMA_Channel'Class;
-      Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
       Memory_Data_Size     : A0B.STM32_DMA.Data_Size);
@@ -70,15 +69,16 @@ is
      (Self : in out Abstract_DMA_Channel'Class);
 
 --     procedure Disable_Transfer_Completed (Self : in out DMA_Channel'Class);
---
---     function Get_Masked_And_Clear_Transfer_Completed
---       (Self : in out DMA_Channel'Class) return Boolean;
+
+   function Get_Masked_And_Clear_Transfer_Completed
+     (Self : in out Abstract_DMA_Channel'Class) return Boolean;
 
 private
 
    type Abstract_DMA_Channel
      (Peripheral : not null access A0B.Peripherals.DMA.DMA_Registers;
-      Channel    : A0B.STM32_DMA.DMA_Channel_Number)
+      Channel    : A0B.STM32_DMA.DMA_Channel_Number;
+      Priority   : A0B.STM32_DMA.Priority_Level)
    is abstract tagged limited record
       Callback : A0B.Callbacks.Callback;
    end record;
