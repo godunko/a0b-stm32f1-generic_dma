@@ -176,6 +176,7 @@ package body A0B.STM32_DMA.F1_Channels is
 
    procedure Configure_Memory_To_Peripheral
      (Self                 : in out Abstract_DMA_Channel'Class;
+      Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
       Memory_Data_Size     : A0B.STM32_DMA.Data_Size)
@@ -194,6 +195,7 @@ package body A0B.STM32_DMA.F1_Channels is
          Value.MINC    := True;   --  1: Memory increment mode enabled
          Value.PSIZE   := Peripheral_Data_Size;
          Value.MSIZE   := Memory_Data_Size;
+         Value.PL      := Priority;
          Value.MEM2MEM := False;  --  0: Memory to memory mode disabled
 
          Registers.DMA_CCR := Value;
@@ -208,6 +210,7 @@ package body A0B.STM32_DMA.F1_Channels is
 
    procedure Configure_Peripheral_To_Memory
      (Self                 : in out Abstract_DMA_Channel'Class;
+      Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
       Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
       Memory_Data_Size     : A0B.STM32_DMA.Data_Size)
@@ -226,6 +229,7 @@ package body A0B.STM32_DMA.F1_Channels is
          Value.MINC    := True;   --  1: Memory increment mode enabled
          Value.PSIZE   := Peripheral_Data_Size;
          Value.MSIZE   := Memory_Data_Size;
+         Value.PL      := Priority;
          Value.MEM2MEM := False;  --  0: Memory to memory mode disabled
 
          Registers.DMA_CCR := Value;
@@ -298,7 +302,17 @@ package body A0B.STM32_DMA.F1_Channels is
    -- Initialize --
    ----------------
 
-   not overriding procedure Initialize (Self : in out Abstract_DMA_Channel) is
+   procedure Initialize (Self : in out Abstract_DMA_Channel'Class) is
+   begin
+      Self.Internal_Initialize;
+   end Initialize;
+
+   -------------------------
+   -- Internal_Initialize --
+   -------------------------
+
+   not overriding procedure Internal_Initialize
+     (Self : in out Abstract_DMA_Channel) is
    begin
       --  XXX Enable clocks - it is platform depended
 
@@ -311,11 +325,10 @@ package body A0B.STM32_DMA.F1_Channels is
          Value.TCIE := False;  --  0: TC interrupt disabled
          Value.HTIE := False;  --  0: HT interrupt disabled
          Value.TEIE := False;  --  0: TE interrupt disabled
-         Value.PL   := Self.Priority;
 
          Self.Peripheral.Channel (Self.Channel).DMA_CCR := Value;
       end;
-   end Initialize;
+   end Internal_Initialize;
 
    ----------------
    -- Is_Enabled --
