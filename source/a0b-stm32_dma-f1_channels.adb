@@ -178,8 +178,8 @@ package body A0B.STM32_DMA.F1_Channels is
      (Self                 : in out Abstract_DMA_Channel'Class;
       Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
-      Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
-      Memory_Data_Size     : A0B.STM32_DMA.Data_Size)
+      Peripheral_Data_Size : A0B.STM32_DMA.DMA_Data_Item;
+      Memory_Data_Size     : A0B.STM32_DMA.DMA_Data_Item)
    is
       Registers : A0B.Peripherals.DMA.Channel_Registers
         renames Self.Peripheral.Channel (Self.Channel);
@@ -212,8 +212,8 @@ package body A0B.STM32_DMA.F1_Channels is
      (Self                 : in out Abstract_DMA_Channel'Class;
       Priority             : A0B.STM32_DMA.Priority_Level;
       Peripheral_Address   : System.Address;
-      Peripheral_Data_Size : A0B.STM32_DMA.Data_Size;
-      Memory_Data_Size     : A0B.STM32_DMA.Data_Size)
+      Peripheral_Data_Size : A0B.STM32_DMA.DMA_Data_Item;
+      Memory_Data_Size     : A0B.STM32_DMA.DMA_Data_Item)
    is
       Registers : A0B.Peripherals.DMA.Channel_Registers
         renames Self.Peripheral.Channel (Self.Channel);

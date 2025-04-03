@@ -10,7 +10,7 @@ is
 
    type DMA_Channel_Number is range 1 .. 8;
 
-   type Data_Size is (Size_8_Bits, Size_16_Bits, Size_32_Bits, Reserved_11)
+   type DMA_Data_Item is (Byte, Half_Word, Word, Reserved_11)
      with Size => 2;
 
    type Priority_Level is (Low, Medium, High, Very_High) with Size => 2;

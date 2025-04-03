@@ -46,8 +46,8 @@ is
       CIRC           : Boolean;
       PINC           : Boolean;
       MINC           : Boolean;
-      PSIZE          : A0B.STM32_DMA.Data_Size;
-      MSIZE          : A0B.STM32_DMA.Data_Size;
+      PSIZE          : A0B.STM32_DMA.DMA_Data_Item;
+      MSIZE          : A0B.STM32_DMA.DMA_Data_Item;
       PL             : A0B.STM32_DMA.Priority_Level;
       MEM2MEM        : Boolean;
       Reserved_15_31 : A0B.Types.Reserved_17;
